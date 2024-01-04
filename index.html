@@ -14,13 +14,25 @@
 
     .container {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap; /* Default horizontal layout for desktop */
+      justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
+    @media (max-width: 600px) {
+      /* Stack cards vertically for mobile */
+      .container {
+        flex-direction: column;
+        flex-wrap: nowrap; /* Ensures cards stack vertically */
+      }
+      .card {
+        margin-bottom: 20px;
+      }
+    }
+
     .card {
-      width: 90%;
+      width: 300px; /* Adjusted for desktop layout */
       height: 300px;
       margin: 10px;
       border: 1px solid black;
@@ -55,13 +67,6 @@
     .card p {
       text-align: center;
       font-weight: bold;
-    }
-
-    @media (max-width: 600px) {
-      /* CSS code for mobile responsive design */
-      .card {
-        margin-bottom: 20px;
-      }
     }
   </style>
     <title>Risk and Lot Calculator</title>
