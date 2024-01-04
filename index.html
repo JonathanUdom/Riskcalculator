@@ -1,28 +1,32 @@
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     /* CSS code for styling the page */
-    * {
-      box-sizing: border-box;
+    body {
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
     }
 
     .container {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
       height: 100vh;
     }
 
     .card {
-      width: 300px;
+      width: 90%;
       height: 300px;
-      border: 1px solid black;
       margin: 10px;
+      border: 1px solid black;
+      border-radius: 50px;
+      box-shadow: 2px 2px 5px grey;
       padding: 20px;
-      font-family: Arial, sans-serif;
     }
 
     .card h2 {
@@ -33,15 +37,18 @@
       display: block;
       width: 80%;
       margin: 10px auto;
+      border-radius: 10px;
     }
 
     .card button {
       display: block;
       width: 50%;
       margin: 10px auto;
+      padding: 10px;
       background-color: green;
       color: white;
       border: none;
+      border-radius: 10px;
       cursor: pointer;
     }
 
@@ -51,64 +58,89 @@
     }
 
     @media (max-width: 600px) {
-      /* CSS code for mobile view */
-      .container {
-        flex-direction: column;
+      /* CSS code for mobile responsive design */
+      .card {
+        margin-bottom: 20px;
       }
     }
   </style>
+    <title>Risk and Lot Calculator</title>
 </head>
 <body>
-  <div class="container">
-    <div class="card" id="risk-card">
-      <h2>Risk Percentage Calculator</h2>
-      <input type="number" id="entry" placeholder="Enter entry price">
-      <input type="number" id="exit" placeholder="Enter exit price">
-      <button id="risk-btn">Calculate</button>
-      <p id="risk-result"></p>
+    <div class="container">
+        <!-- HTML code for the risk percentage calculator card -->
+        <div class="card" id="risk-card">
+            <h2>Risk Percentage Calculator</h2>
+            <input type="number" id="entry-price" placeholder="Enter entry price">
+            <input type="number" id="exit-price" placeholder="Enter exit price">
+            <button id="risk-button">Calculate Risk</button>
+            <p id="risk-result">Risk percentage: N/A</p>
+        </div>
+        <!-- HTML code for the lot size calculator card -->
+        <div class="card" id="lot-card">
+            <h2>Lot Size Calculator</h2>
+            <input type="number" id="pnl" placeholder="Enter PNL">
+            <input type="number" id="leverage" placeholder="Enter leverage">
+            <input type="number" id="risk-percentage" placeholder="Enter risk percentage">
+            <input type="number" id="contract-size" placeholder="Enter contract size">
+            <input type="number" id="entry-price" placeholder="Enter entry price">
+            <button id="lot-button">Calculate Lot Size</button>
+            <p id="lot-result">Lot size: N/A</p>
+        </div>
     </div>
-    <div class="card" id="lot-card">
-      <h2>Lot Size Calculator</h2>
-      <input type="number" id="pnl" placeholder="Enter PNL">
-      <input type="number" id="leverage" placeholder="Enter leverage">
-      <input type="number" id="risk" placeholder="Enter risk percentage">
-      <input type="number" id="contract" placeholder="Enter contract size">
-      <input type="number" id="price" placeholder="Enter entry price">
-      <button id="lot-btn">Calculate</button>
-      <p id="lot-result"></p>
-    </div>
-  </div>
-  <script>
-    // JavaScript code for handling the logic and calculations
-    // Get the elements from the document
-    var riskCard = document.getElementById("risk-card");
-    var lotCard = document.getElementById("lot-card");
-    var entry = document.getElementById("entry");
-    var exit = document.getElementById("exit");
-    var riskBtn = document.getElementById("risk-btn");
-    var riskResult = document.getElementById("risk-result");
-    var pnl = document.getElementById("pnl");
-    var leverage = document.getElementById("leverage");
-    var risk = document.getElementById("risk");
-    var contract = document.getElementById("contract");
-    var price = document.getElementById("price");
-    var lotBtn = document.getElementById("lot-btn");
-    var lotResult = document.getElementById("lot-result");
+    <script>
+        // JavaScript code for the logic and functionality of the calculators
+        // Get the elements from the document by their id
+        const riskCard = document.getElementById("risk-card");
+        const lotCard = document.getElementById("lot-card");
+        const riskButton = document.getElementById("risk-button");
+        const lotButton = document.getElementById("lot-button");
+        const riskResult = document.getElementById("risk-result");
+        const lotResult = document.getElementById("lot-result");
 
-    // Add event listeners to the buttons
-    riskBtn.addEventListener("click", function() {
-      // Calculate the risk percentage using the formula
-      var riskPercentage = Math.abs((entry.value - exit.value) / entry.value) * 100;
-      // Display the result in the paragraph element
-      riskResult.innerHTML = "Risk percentage: " + riskPercentage.toFixed(2) + "%";
-    });
+        // Add event listeners to the buttons to trigger the calculations
+        riskButton.addEventListener("click", calculateRisk);
+        lotButton.addEventListener("click", calculateLot);
 
-    lotBtn.addEventListener("click", function() {
-      // Calculate the lot size using the formula
-      var lotSize = (pnl.value * leverage.value) / (leverage.value * (risk.value / 100) * contract.value * price.value);
-      // Display the result in the paragraph element
-      lotResult.innerHTML = "Lot size: " + lotSize.toFixed(2);
-    });
-  </script>
+        // Define the functions for the calculations
+        function calculateRisk() {
+            // Get the input values from the risk card
+            const entryPrice = Number(riskCard.querySelector("#entry-price").value);
+            const exitPrice = Number(riskCard.querySelector("#exit-price").value);
+
+            // Check if the input values are valid numbers
+            if (isNaN(entryPrice) || isNaN(exitPrice) || entryPrice === 0) {
+                // Display an error message
+                riskResult.textContent = "Invalid input";
+            } else {
+                // Calculate the risk percentage using the formula
+                const riskPercentage = Math.abs(((entryPrice - exitPrice) / entryPrice) * 100);
+
+                // Display the result with two decimal places
+                riskResult.textContent = `Risk percentage: ${riskPercentage.toFixed(2)}%`;
+            }
+        }
+
+        function calculateLot() {
+            // Get the input values from the lot card
+            const pnl = Number(lotCard.querySelector("#pnl").value);
+            const leverage = Number(lotCard.querySelector("#leverage").value);
+            const riskPercentage = Number(lotCard.querySelector("#risk-percentage").value);
+            const contractSize = Number(lotCard.querySelector("#contract-size").value);
+            const entryPrice = Number(lotCard.querySelector("#entry-price").value);
+
+            // Check if the input values are valid numbers
+            if (isNaN(pnl) || isNaN(leverage) || isNaN(riskPercentage) || isNaN(contractSize) || isNaN(entryPrice) || leverage === 0 || riskPercentage === 0 || contractSize === 0 || entryPrice === 0) {
+                // Display an error message
+                lotResult.textContent = "Invalid input";
+            } else {
+                // Calculate the lot size using the formula
+                const lotSize = (pnl * leverage) / (leverage * (riskPercentage / 100) * contractSize * entryPrice);
+
+                // Display the result with two decimal places
+                lotResult.textContent = `Lot size: ${lotSize.toFixed(2)}`;
+            }
+        }
+    </script>
 </body>
 </html>
