@@ -2,62 +2,87 @@
 <html>
 <head>
   <style>
-    body {
-      font-family: sans-serif;
-      min-height: 100vh;
-      margin: 0;
-      background-color: #f5f5f5;
-    }
+body {
+  font-family: sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center; /* Vertically center content on large screens */
+  justify-content: center; /* Horizontally center content on large screens */
+}
 
-    .card {
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin: 20px;
-      max-width: 400px; /* Set a maximum width for the card */
-    }
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 400px; /* Set a maximum width for larger screens */
+}
 
-    /* Base styles */
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
+/* Base styles using relative units */
+h1 {
+  font-size: 2rem; /* 2 times the root font size */
+  margin-bottom: 1.5rem; /* 1.5 times the root font size */
+}
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
+label {
+  display: block;
+  margin-bottom: 1rem; /* 1 times the root font size */
+}
 
-    input,
-    select,
-    button {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      -webkit-appearance: none; /* Remove default select styling */
-    }
+input,
+select,
+button {
+  width: 100%;
+  padding: 1rem; /* 1 times the root font size */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem; /* 1 times the root font size */
+  -webkit-appearance: none; /* Remove default select styling */
+}
 
-    button {
-      background-color: #4CAF50;
-      color: white;
-      font-weight: bold;
-    }
+button {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
 
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-    }
+p {
+  font-size: 1.2rem; /* 1.2 times the root font size */
+  margin-bottom: 1rem; /* 1 times the root font size */
+}
 
-    /* Mobile view (portrait) */
-    @media (max-width: 768px) {
-      .card {
-        margin: 40px auto; /* Center the card horizontally */
-      }
-    }
-  </style>
+/* Large desktop (wider than 1200px) */
+@media (min-width: 1200px) {
+  .card {
+    margin: 0 10%; /* Add some left and right padding on larger screens */
+  }
+}
+
+/* Mobile view (portrait) */
+@media (max-width: 768px) {
+  .card {
+    max-width: 90%; /* Adjust for smaller screens */
+    margin: 0 auto; /* Re-center for smaller screens */
+  }
+
+  /* Stack elements vertically for better readability */
+  label {
+    display: inline-block;
+    width: 100%;
+  }
+
+  input,
+  select {
+    margin-bottom: 0.5rem; /* Reduce spacing for smaller screens */
+  }
+
+  h1 {
+    font-size: 1.5rem; /* Reduce font size for smaller screens */
+  }
+}
+</style>
 </head>
 <body>
   <div class="card"> <!-- Wrap the content in a div with the card class -->
