@@ -1,154 +1,176 @@
-<!DOCTYPE html>
 <html>
 <head>
-<style>
-body {
-  font-family: sans-serif;
-  min-height: 100vh;
-  margin: 0;
-  background-color: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 15px; /* Slightly reduced for mobile */
-  max-width: 400px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
 
-/* Base styles using relative units */
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem; /* Adjusted for mobile */
-}
+    .card {
+      width: 80%;
+      max-width: 600px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
 
-label {
-  display: block;
-  margin-bottom: 0.8rem; /* Adjusted for mobile */
-}
+    .card-title {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-input,
-select,
-button {
-  width: 100%;
-  padding: 0.6rem; /* Adjusted for mobile */
-  margin-bottom: 0.4rem; /* Adjusted for mobile */
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  -webkit-appearance: none;
-}
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
 
-button {
-  background-color: #4CAF50;
-  color: white;
-  font-weight: bold;
-}
+    .form-label {
+      font-size: 16px;
+      font-weight: normal;
+      margin-bottom: 5px;
+    }
 
-p {
-  font-size: 1rem; /* Adjusted for mobile */
-  margin-bottom: 0.8rem; /* Adjusted for mobile */
-}
+    .form-input {
+      font-size: 16px;
+      font-weight: normal;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+    }
 
-/* Large desktop (wider than 1200px) */
-@media (min-width: 1200px) {
-  .card {
-    margin: 0 10%;
-  }
+    .form-select {
+      font-size: 16px;
+      font-weight: normal;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      appearance: none;
+    }
 
-  input,
-  select {
-    width: calc(100% - 2rem);
-  }
-}
+    .form-button {
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      background-color: #0078d4;
+      color: white;
+      cursor: pointer;
+    }
 
-/* Mobile view (portrait) */
-@media (max-width: 768px) {
-  .card {
-    max-width: 95%; /* Increased for better fit */
-    margin: 0 auto;
-  }
+    .form-button:hover {
+      background-color: #005a9e;
+    }
 
-  label {
-    display: inline-block;
-    width: 100%;
-  }
+    .form-button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
 
-  h1 {
-    font-size: 1.4rem; /* Adjusted for mobile */
-  }
-
-  /* Added a media query to change the layout of the inputs and select on small screens */
-  input,
-  select {
-    width: 48%; /* Reduced the width to fit two elements in one row */
-    margin-right: 2%; /* Added some margin to create some space between the elements */
-  }
-
-  /* Added a media query to change the width of the last input and select on small screens */
-  input:nth-child(6),
-  select {
-    width: 100%; /* Set the width to 100% to fill the row */
-    margin-right: 0; /* Removed the margin to avoid overflow */
-  }
-}
-</style>
+    .result {
+      font-size: 18px;
+      font-weight: normal;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-  <div class="card"> <!-- Wrap the content in a div with the card class -->
-    <h1>Lot Size Calculator</h1>
-    <p>Enter the dollar risk, entry price and exit price:</p>
-    <input id="dollar-risk" type="number" placeholder="Dollar risk">
-    <input id="entry-price" type="number" placeholder="Entry price">
-    <input id="exit-price" type="number" placeholder="Exit price">
-    <p>What are you trading?</p>
-    <select id="contract-size">
-      <option value="100000">Forex</option>
-      <option value="1">Crypto/Single stock</option>
-      <option value="10">Stock index</option>
-      <option value="100">Metals/Commodities</option>
-    </select>
-    <button id="calculate">Calculate</button>
-    <p id="result"></p>
-    <script>
-      // Get the elements from the document
-      var dollarRisk = document.getElementById("dollar-risk");
-      var entryPrice = document.getElementById("entry-price");
-      var exitPrice = document.getElementById("exit-price");
-      var contractSize = document.getElementById("contract-size");
-      var calculate = document.getElementById("calculate");
-      var result = document.getElementById("result");
-
-      // Define a function to calculate the lot size
-      function calculateLotSize() {
-        // Get the values from the inputs and select
-        var dr = Number(dollarRisk.value);
-        var ep = Number(entryPrice.value);
-        var xp = Number(exitPrice.value);
-        var cs = Number(contractSize.value);
-
-        // Check if the values are valid
-        if (dr > 0 && ep > 0 && xp > 0 && cs > 0) {
-          // Calculate the lot size using the formula
-          var ls = dr / (Math.abs((xp - ep) / ep) * cs * ep);
-
-          // Display the result with two decimal places
-          result.textContent = "Lot size: " + ls.toFixed(2);
-        } else {
-          // Display an error message
-          result.textContent = "Please enter valid values.";
-        }
-      }
-
-      // Add an event listener to the calculate button
-      calculate.addEventListener("click", calculateLotSize);
-    </script>
+  <div class="container">
+    <div class="card">
+      <div class="card-title">Lot Size Calculator</div>
+      <div class="form-group">
+        <label class="form-label" for="dollar-risk">Dollar Risk</label>
+        <input class="form-input" id="dollar-risk" type="number" min="0" step="0.01" placeholder="Enter the dollar risk" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="entry-price">Entry Price</label>
+        <input class="form-input" id="entry-price" type="number" min="0" step="0.01" placeholder="Enter the entry price" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="exit-price">Exit Price</label>
+        <input class="form-input" id="exit-price" type="number" min="0" step="0.01" placeholder="Enter the exit price" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="contract-size">What are you trading?</label>
+        <select class="form-select" id="contract-size">
+          <option value="100000">Forex</option>
+          <option value="1">Crypto/Single Stock</option>
+          <option value="10">Stock Index</option>
+          <option value="100">Metals/Commodities</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <button class="form-button" id="calculate-button" disabled>Calculate</button>
+      </div>
+      <div class="result" id="result"></div>
+    </div>
   </div>
+  <script>
+    // Get the form elements
+    const dollarRiskInput = document.getElementById("dollar-risk");
+    const entryPriceInput = document.getElementById("entry-price");
+    const exitPriceInput = document.getElementById("exit-price");
+    const contractSizeSelect = document.getElementById("contract-size");
+    const calculateButton = document.getElementById("calculate-button");
+    const resultDiv = document.getElementById("result");
+
+    // Define the formula for lot size
+    const calculateLotSize = (dollarRisk, entryPrice, exitPrice, contractSize) => {
+      return dollarRisk / (Math.abs((entryPrice - exitPrice) / entryPrice) * contractSize * entryPrice);
+    };
+
+    // Define the function to validate the inputs
+    const validateInputs = () => {
+      // Get the input values
+      const dollarRisk = parseFloat(dollarRiskInput.value);
+      const entryPrice = parseFloat(entryPriceInput.value);
+      const exitPrice = parseFloat(exitPriceInput.value);
+
+      // Check if the inputs are valid numbers
+      if (isNaN(dollarRisk) || isNaN(entryPrice) || isNaN(exitPrice)) {
+        // Disable the calculate button
+        calculateButton.disabled = true;
+      } else {
+        // Enable the calculate button
+        calculateButton.disabled = false;
+      }
+    };
+
+    // Define the function to handle the calculate button click
+    const handleCalculate = () => {
+      // Get the input values
+      const dollarRisk = parseFloat(dollarRiskInput.value);
+      const entryPrice = parseFloat(entryPriceInput.value);
+      const exitPrice = parseFloat(exitPriceInput.value);
+      const contractSize = parseFloat(contractSizeSelect.value);
+
+      // Calculate the lot size using the formula
+      const lotSize = calculateLotSize(dollarRisk, entryPrice, exitPrice, contractSize);
+
+      // Display the result
+      resultDiv.textContent = `The lot size is ${lotSize.toFixed(2)}`;
+    };
+
+    // Add event listeners to the inputs and the button
+    dollarRiskInput.addEventListener("input", validateInputs);
+    entryPriceInput.addEventListener("input", validateInputs);
+    exitPriceInput.addEventListener("input", validateInputs);
+    calculateButton.addEventListener("click", handleCalculate);
+  </script>
 </body>
 </html>
