@@ -83,6 +83,20 @@ p {
   h1 {
     font-size: 1.4rem; /* Adjusted for mobile */
   }
+
+  /* Added a media query to change the layout of the inputs and select on small screens */
+  input,
+  select {
+    width: 48%; /* Reduced the width to fit two elements in one row */
+    margin-right: 2%; /* Added some margin to create some space between the elements */
+  }
+
+  /* Added a media query to change the width of the last input and select on small screens */
+  input:nth-child(6),
+  select {
+    width: 100%; /* Set the width to 100% to fill the row */
+    margin-right: 0; /* Removed the margin to avoid overflow */
+  }
 }
 </style>
 </head>
