@@ -131,7 +131,7 @@
 
     // Define the formula for lot size
     const calculateLotSize = (dollarRisk, entryPrice, exitPrice, contractSize) => {
-      return dollarRisk / (Math.abs((entryPrice - exitPrice) / entryPrice) * contractSize * entryPrice);
+      return dollarRisk / (Math.abs((exitPrice - entryPrice) / entryPrice) * contractSize * entryPrice);
     };
 
     // Define the function to validate the inputs
